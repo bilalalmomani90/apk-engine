@@ -1,0 +1,54 @@
+# One workflow, two modes (use in a PRIVATE repository, with your own projects only):
+#   zip_name empty      -> runs the self-tests
+#   zip_name = x.zip    -> builds x.zip (located in the repo root) and uploads the APK
+# After upload, move this file to .github/workflows/apk-engine.yml (see README_AR.md).
+name: apk-engine
+
+on:
+  workflow_dispatch:
+    inputs:
+      zip_name:
+        description: "اتركه فارغاً لتشغيل الاختبارات الذاتية، أو اكتب اسم ZIP المشروع (مثال: myapp.zip)"
+        required: false
+        default: ""
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  run:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Self-test or build
+        env:
+          ZIP_NAME: ${{ inputs.zip_name }}
+        run: |
+          set -uo pipefail
+          if [ -z "$ZIP_NAME" ]; then
+            python3 -m unittest -v test_apkengine
+            exit $?
+          fi
+          if ! [[ "$ZIP_NAME" =~ ^[A-Za-z0-9._-]+\.zip$ ]]; then
+            echo "اسم الملف غير صالح"; exit 1
+          fi
+          if [ ! -f "$ZIP_NAME" ]; then
+            echo "الملف $ZIP_NAME غير موجود في جذر المستودع"; exit 1
+          fi
+          mkdir -p "$RUNNER_TEMP/work" out
+          python3 apkengine.py build --zip "$ZIP_NAME" --work "$RUNNER_TEMP/work" --out out
+          rc=$?
+          python3 apkengine.py summary out/result.json >> "$GITHUB_STEP_SUMMARY" || true
+          exit $rc
+
+      - uses: actions/upload-artifact@v4
+        if: always() && inputs.zip_name != ''
+        with:
+          name: apk-result
+          path: out/
+          retention-days: 7
