@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>حوّل مشروع Android إلى APK</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <main>
+    <header>
+      <h1>مشروع Android ← ملف APK</h1>
+      <p class="lead">ارفع مشروعك (Java أو Kotlin) مضغوطاً بصيغة ZIP، واستلم ملف APK جاهزاً للتثبيت.</p>
+    </header>
+
+    <section id="pick">
+      <input id="file" type="file" accept=".zip,application/zip" class="sr">
+      <label class="drop" for="file">
+        <span id="file-label">اختر ملف ZIP</span>
+        <span id="file-meta">لم يُختر ملف بعد</span>
+      </label>
+      <p id="pick-error" class="error-line" role="alert" hidden></p>
+      <button id="go" type="button" disabled>ابنِ APK</button>
+      <ul class="tips">
+        <li>احذف مجلدَي <code>build</code> و<code>.gradle</code> قبل الضغط لتصغير الحجم.</li>
+        <li>لا تضع مفاتيح التوقيع (<code>.jks</code>) أو ملف <code>local.properties</code> داخل الـ ZIP.</li>
+        <li id="limits"></li>
+      </ul>
+    </section>
+
+    <section id="progress" hidden aria-live="polite">
+      <ol class="rail">
+        <li data-s="upload">رفع الملف</li>
+        <li data-s="check">فحص المشروع</li>
+        <li data-s="build">البناء</li>
+        <li data-s="done">جاهز</li>
+      </ol>
+      <p id="status-text"></p>
+      <div class="bar" id="bar" hidden><div id="bar-fill"></div></div>
+    </section>
+
+    <section id="result" hidden aria-live="polite">
+      <h2 id="result-title"></h2>
+      <p id="result-text"></p>
+      <ul id="apk-list" class="apks"></ul>
+      <details id="details" hidden>
+        <summary>تفاصيل الخطأ</summary>
+        <pre id="excerpt" dir="ltr"></pre>
+      </details>
+      <button id="again" type="button" class="secondary">ابدأ من جديد</button>
+    </section>
+  </main>
+  <script src="/app.js"></script>
+</body>
+</html>

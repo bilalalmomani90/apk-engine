@@ -1,0 +1,58 @@
+:root {
+  --bg: #eef2f4;
+  --surface: #ffffff;
+  --ink: #10202b;
+  --muted: #55656f;
+  --line: #cbd5db;
+  --accent: #17704f;
+  --accent-ink: #ffffff;
+  --danger: #b3261e;
+  --warn-bg: #fdf3e1;
+  font-family: "Segoe UI", Tahoma, "Noto Sans Arabic", "Noto Naskh Arabic", system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--ink); line-height: 1.7; }
+main { max-width: 40rem; margin: 0 auto; padding: 2rem 1.1rem 4rem; }
+h1 { font-size: clamp(1.6rem, 6vw, 2.2rem); line-height: 1.25; margin: 0 0 .6rem; font-weight: 800; }
+h2 { font-size: 1.25rem; margin: 0 0 .4rem; }
+.lead { color: var(--muted); margin: 0 0 1.6rem; font-size: 1.05rem; max-width: 34rem; }
+section { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 1.2rem; margin-bottom: 1rem; }
+[hidden] { display: none !important; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+.drop { display: block; border: 2px dashed var(--line); border-radius: 10px; padding: 1.4rem 1rem; text-align: center; cursor: pointer; background: #f8fafb; }
+.drop span { display: block; }
+#file-label { font-weight: 700; font-size: 1.1rem; }
+#file-meta { color: var(--muted); font-size: .95rem; margin-top: .2rem; direction: rtl; }
+.drop:hover { border-color: var(--accent); }
+#file:focus-visible + .drop, button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px solid #1e6fd9; outline-offset: 2px; }
+
+button { font: inherit; font-weight: 700; min-height: 3rem; width: 100%; margin-top: .9rem; border: 0; border-radius: 8px; background: var(--accent); color: var(--accent-ink); cursor: pointer; }
+button:disabled { background: #9fb5ad; cursor: not-allowed; }
+button.secondary { background: transparent; color: var(--ink); border: 1px solid var(--line); margin-top: 1.1rem; }
+.tips { margin: 1rem 0 0; padding: 0 1.2rem 0 0; color: var(--muted); font-size: .95rem; }
+code { direction: ltr; unicode-bidi: embed; background: #eef2f4; padding: 0 .3em; border-radius: 4px; font-size: .9em; }
+.error-line { color: var(--danger); margin: .7rem 0 0; font-weight: 600; }
+
+.rail { list-style: none; display: grid; grid-template-columns: repeat(4, 1fr); gap: .3rem; margin: 0 0 1rem; padding: 0; counter-reset: s; }
+.rail li { position: relative; padding-top: 1.7rem; text-align: center; font-size: .9rem; color: var(--muted); }
+.rail li::before { content: ""; position: absolute; top: 0; left: 50%; margin-left: -.6rem; width: 1.2rem; height: 1.2rem; border-radius: 50%; background: var(--line); }
+.rail li.done { color: var(--ink); }
+.rail li.done::before { background: var(--accent); }
+.rail li.active { color: var(--ink); font-weight: 700; }
+.rail li.active::before { background: var(--accent); box-shadow: 0 0 0 0 rgba(23,112,79,.5); animation: pulse 1.6s ease-out infinite; }
+.rail li.failed::before { background: var(--danger); }
+@keyframes pulse { to { box-shadow: 0 0 0 .7rem rgba(23,112,79,0); } }
+@media (prefers-reduced-motion: reduce) { .rail li.active::before { animation: none; } }
+#status-text { margin: 0; }
+.bar { height: .5rem; border-radius: 4px; background: var(--line); overflow: hidden; margin-top: .8rem; }
+#bar-fill { height: 100%; width: 0; background: var(--accent); transition: width .2s; }
+
+.apks { list-style: none; margin: 1rem 0 0; padding: 0; display: grid; gap: .7rem; }
+.apks a { display: block; padding: .9rem 1rem; border-radius: 8px; background: var(--accent); color: var(--accent-ink); text-decoration: none; font-weight: 700; }
+.apks small { display: block; font-weight: 400; opacity: .9; direction: ltr; text-align: right; word-break: break-all; }
+#result.fail h2, #result.reject h2 { color: var(--danger); }
+details { margin-top: 1rem; }
+summary { cursor: pointer; color: var(--muted); }
+pre { white-space: pre-wrap; word-break: break-word; background: #f3f5f6; border: 1px solid var(--line); border-radius: 8px; padding: .8rem; font-size: .85rem; max-height: 18rem; overflow: auto; }
